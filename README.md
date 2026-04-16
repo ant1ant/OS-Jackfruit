@@ -9,7 +9,7 @@
 ### - build:
 ```bash
 cd boilerplate
-make
+gcc engine.c -o engine -lpthread
 ```
 ### - load kernal module:
 ```bash
@@ -18,17 +18,21 @@ ls -l /dev/container_monitor
 ```
 ### - Start Supervisor (terminal 1):
 ```bash
-sudo ./engine supervisor ./rootfs-base
+sudo ./boilerplate/engine supervisor ./rootfs-base
 ```
 ### - Launch containers (terminal 2):
 ```bash
 sudo ./engine start alpha ./rootfs-alpha /bin/sh
-sudo ./engine start beta ./rootfs-beta ./cpu_hog --soft-mib 48 --hard-mib 80
+sudo ./engine start alpha ./rootfs-alpha "echo hello; sleep 30"
+sudo ./engine start jackfruit_test ./rootfs-base "memory_hog 20"
+sudo ./engine start policy_test ./rootfs-base "memory_hog 20"
 ```
 ### - List and monitor:
 ```bash
 sudo ./engine ps
-sudo ./engine logs alpha
+cat logs/alpha.log
+sudo ./engine ps
+cat logs/jackfruit_test.log
 ```
 ### - Stop Containers:
 ```bash
